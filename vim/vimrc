@@ -1,0 +1,104 @@
+" Basic settings
+set nocompatible
+syntax enable
+set number
+set relativenumber
+set encoding=utf-8
+set fileencoding=utf-8
+set hidden
+set nowrap
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+set mouse=a
+set colorcolumn=100
+
+" Search settings
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" Key mappings
+let mapleader = ","
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+" nnoremap <leader>f :Files<CR>
+nnoremap <leader>p :execute 'Files' NERDTreeCWD()<CR>
+nnoremap <leader>g :Rg<CR>
+
+" Pathogen setup
+execute pathogen#infect()
+execute pathogen#helptags()
+
+" Note: Install plugins by cloning into ~/.vim/bundle:
+"   cd ~/.vim/bundle
+"   git clone https://github.com/tpope/vim-fugitive.git
+"   git clone https://github.com/junegunn/fzf.git
+"   git clone https://github.com/junegunn/fzf.vim.git
+"   git clone https://github.com/morhetz/gruvbox.git
+"   git clone https://github.com/preservim/nerdtree.git
+
+" Set colorscheme if available
+if !empty(glob("~/.vim/bundle/gruvbox/colors/gruvbox.vim"))
+    colorscheme gruvbox
+    set background=dark
+endif
+
+" Window management mappings
+" Split creation
+nnoremap <leader>v <C-w>v     " Vertical split
+nnoremap <leader>s <C-w>s     " Horizontal split
+
+" Window navigation
+nnoremap <leader>h <C-w>h     " Move to left window
+nnoremap <leader>j <C-w>j     " Move to window below
+nnoremap <leader>k <C-w>k     " Move to window above
+nnoremap <leader>l <C-w>l     " Move to right window
+
+" Window resizing
+nnoremap <leader>= <C-w>=     " Make windows equal size
+nnoremap <leader>- <C-w>_     " Maximize height
+nnoremap <leader>\ <C-w>|     " Maximize width
+
+" NERDTree Core Settings
+let g:NERDTreeHijackNetrw = 0
+let g:NERDTreeCustomOpenArgs = {'file': {'where': 't'}}
+let g:NERDTreeMouseMode = 3
+let g:NERDTreeCreatePrefix = 'silent keepalt keepjumps'
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeMinimalUI = 1
+
+" NERDTree Startup Behavior
+autocmd VimEnter * if argc() > 0
+    \ | if isdirectory(expand(argv(0)))
+    \ |   execute 'NERDTree ' . argv(0)
+    \ | else
+    \ |   NERDTree
+    \ |   wincmd p
+    \ |   execute 'edit ' . argv(0)
+    \ | endif
+    \ | endif
+
+function! CloseAll(bang)
+    let l:windowCount = len(filter(range(1, winnr('$')), 'getwinvar(v:val, "&ft") != "nerdtree"'))
+    
+    NERDTreeClose
+    if a:bang == '!'
+        execute 'quit!'
+    elseif l:windowCount <= 1
+        quit
+    else
+        quit
+    endif
+endfunction
+
+command! -bang Q call CloseAll('<bang>')
+cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Q' : 'q')<CR>
+
+" Auto close if NERDTree is literally the last window
+autocmd BufEnter * if winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | q | endif
