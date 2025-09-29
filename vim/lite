@@ -1,0 +1,117 @@
+" =========================
+" Vim Lite (no plugins)
+" =========================
+
+" Basics
+set nocompatible
+syntax enable
+
+set encoding=utf-8
+set fileencoding=utf-8
+
+" UI
+set number
+set relativenumber
+set nowrap
+set colorcolumn=100
+set signcolumn=yes
+set splitbelow
+set splitright
+set updatetime=300
+set timeoutlen=400
+set confirm
+
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Leader
+let mapleader = " "
+
+" Indentation (4-space soft tabs)
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+
+" Mouse (disable if not wanted)
+set mouse=a
+
+" =========================
+" Search
+" =========================
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+nnoremap <silent> <leader><space> :nohlsearch<CR>
+
+" =========================
+" Leader & key mappings
+" =========================
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>q :q<CR>
+
+" =========================
+" File navigation & open (netrw + :find)
+" =========================
+set path+=**
+set wildmenu
+set wildmode=longest:full,full
+
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+let g:netrw_winsize=25
+let g:netrw_use_errorwindow=0
+let g:netrw_keepdir=0
+
+nnoremap <silent> <leader>e :Explore <C-r>=expand('%:p:h')<CR><CR>
+nnoremap <silent> <leader>E :Lexplore<CR>
+
+" Quick project-ish open
+nnoremap <silent> <leader>p :find
+
+" =========================
+" Grep (rg if available, else vimgrep)
+" =========================
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m
+  nnoremap <silent> <leader>g :grep
+else
+  nnoremap <silent> <leader>g :vimgrep /<C-r><C-w>/ **/*<CR>:copen<CR>
+endif
+
+" Quickfix navigation
+nnoremap <silent> <leader>co :copen<CR>
+nnoremap <silent> <leader>cc :cclose<CR>
+nnoremap <silent> <leader>cn :cnext<CR>
+nnoremap <silent> <leader>cp :cprev<CR>
+
+" =========================
+" Window management
+" =========================
+nnoremap <silent> <leader>v <C-w>v
+nnoremap <silent> <leader>s <C-w>s
+nnoremap <silent> <leader>h <C-w>h
+nnoremap <silent> <leader>j <C-w>j
+nnoremap <silent> <leader>k <C-w>k
+nnoremap <silent> <leader>l <C-w>l
+nnoremap <silent> <leader>= <C-w>=
+nnoremap <silent> <leader>- <C-w>_
+nnoremap <silent> <leader>\ <C-w>\|
+
+" =========================
+" Safer quit behavior with netrw
+" =========================
+augroup LiteAutocloseExplorer
+  autocmd!
+  autocmd BufEnter * if winnr('$') == 1 && &buftype ==# 'nofile' && expand('%') =~# 'NetrwTreeListing' | quit | endif
+augroup END
+
+" =========================
+" Minimal statusline
+" =========================
+set laststatus=2
+set statusline=%f%m%r%h%w\ [%{&ft}]\ %=%l/%L\ :%c

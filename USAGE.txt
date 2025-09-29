@@ -1,0 +1,46 @@
+Vim Dotfiles
+============
+
+Install
+-------
+Enhanced:
+  curl -fsSL https://robert.bumgarner.org/vimrc/enhanced -o ~/.vimrc
+
+Lite:
+  curl -fsSL https://robert.bumgarner.org/vimrc/lite -o ~/.vimrc
+
+Keep Both:
+  curl -fsSL https://robert.bumgarner.org/vimrc/enhanced -o ~/.vimrc_enhanced
+  curl -fsSL https://robert.bumgarner.org/vimrc/lite      -o ~/.vimrc_lite
+  ln -sf ~/.vimrc_enhanced ~/.vimrc   # use enhanced
+  ln -sf ~/.vimrc_lite ~/.vimrc       # use lite
+
+Usage Guide (Leader = <Space>)
+------------------------------
+
+File Management
+  <Space>w       Save file
+  <Space>q       Quit
+  <Space><Space> Clear search highlight
+
+File Navigation
+  <Space>e       Open file explorer (netrw / NERDTree)
+  <Space>p       Open file (fzf in Enhanced, :find in Lite)
+  <Space>g       Search in project (rg if available, else vimgrep)
+
+Window Management
+  <Space>v       Vertical split
+  <Space>s       Horizontal split
+  <Space>h       Move to left window
+  <Space>j       Move to window below
+  <Space>k       Move to window above
+  <Space>l       Move to right window
+  <Space>=       Equalize all window sizes
+  <Space>-       Maximize current window height
+  <Space>\       Maximize current window width
+
+Quickfix List
+  <Space>co      Open quickfix list
+  <Space>cc      Close quickfix list
+  <Space>cn      Next quickfix item
+  <Space>cp      Previous quickfix item

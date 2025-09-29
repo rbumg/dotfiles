@@ -1,0 +1,29 @@
+{
+  "name": "Vim Dotfiles",
+  "owner": "Robert Bumgarner",
+  "base_url": "https://robert.bumgarner.org/vimrc/",
+  "version": "2025-09-29",
+  "readme": "README.txt",
+  "files": [
+    {
+      "id": "enhanced",
+      "filename": "enhanced",
+      "type": "vimrc",
+      "recommended": true,
+      "description": "Feature-rich .vimrc for flexible systems (guards for missing plugins; falls back on colorscheme).",
+      "url": "https://robert.bumgarner.org/vimrc/enhanced",
+      "install": "curl -fsSL https://robert.bumgarner.org/vimrc/enhanced -o ~/.vimrc",
+      "sha256": ""
+    },
+    {
+      "id": "lite",
+      "filename": "lite",
+      "type": "vimrc",
+      "recommended": false,
+      "description": "Plugin-free .vimrc for restricted/secure hosts (netrw + vimgrep/rg).",
+      "url": "https://robert.bumgarner.org/vimrc/lite",
+      "install": "curl -fsSL https://robert.bumgarner.org/vimrc/lite -o ~/.vimrc",
+      "sha256": ""
+    }
+  ]
+}

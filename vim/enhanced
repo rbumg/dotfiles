@@ -1,0 +1,132 @@
+" =========================
+" Basic settings
+" =========================
+set nocompatible
+syntax enable
+
+set number
+set relativenumber
+
+set encoding=utf-8
+set fileencoding=utf-8
+set hidden
+set nowrap
+
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+
+set mouse=a
+set colorcolumn=100
+set signcolumn=yes
+set splitbelow
+set splitright
+set updatetime=300
+set timeoutlen=400
+set confirm
+
+if has('termguicolors')
+  set termguicolors
+endif
+
+" =========================
+" Leader
+" =========================
+let mapleader = " "
+
+" =========================
+" Colorscheme (prefer gruvbox; fallback to default)
+" =========================
+set background=dark
+try
+  colorscheme gruvbox
+catch /^Vim\%((\a\+)\)\=:E185/
+  colorscheme default
+endtry
+
+" =========================
+" Search settings
+" =========================
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+nnoremap <silent> <leader><space> :nohlsearch<CR>
+
+" =========================
+" Leader & key mappings
+" =========================
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>q :q<CR>
+
+" =========================
+" Plugin manager (Pathogen)
+" =========================
+if exists('*pathogen#infect')
+  execute pathogen#infect()
+  if exists('*pathogen#helptags')
+    execute pathogen#helptags()
+  endif
+endif
+
+" =========================
+" fzf / ripgrep (guarded)
+" =========================
+if exists(':Files')
+  nnoremap <silent> <leader>p :Files <C-r>=expand('%:p:h')<CR><CR>
+else
+  nnoremap <silent> <leader>p :e <C-r>=expand('%:p:h')<CR>/<C-d>
+endif
+
+if exists(':Rg')
+  nnoremap <silent> <leader>g :Rg<CR>
+elseif executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m
+  nnoremap <silent> <leader>g :silent grep<Space>
+else
+  nnoremap <silent> <leader>g :vimgrep /<C-r><C-w>/ **/*<CR>:copen<CR>
+endif
+
+" =========================
+" Window management
+" =========================
+nnoremap <silent> <leader>v <C-w>v
+nnoremap <silent> <leader>s <C-w>s
+nnoremap <silent> <leader>h <C-w>h
+nnoremap <silent> <leader>j <C-w>j
+nnoremap <silent> <leader>k <C-w>k
+nnoremap <silent> <leader>l <C-w>l
+nnoremap <silent> <leader>= <C-w>=
+nnoremap <silent> <leader>- <C-w>_
+nnoremap <silent> <leader>\ <C-w>\|
+
+" =========================
+" NERDTree (guarded)
+" =========================
+let g:NERDTreeHijackNetrw = 0
+let g:NERDTreeCustomOpenArgs = {'file': {'where': 't'}}
+let g:NERDTreeMouseMode = 3
+let g:NERDTreeCreatePrefix = 'silent keepalt keepjumps'
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeMinimalUI = 1
+
+augroup NERDTreeStartup
+  autocmd!
+  autocmd VimEnter * if exists(':NERDTree') && argc() > 0 |
+        \ if isdirectory(expand(argv(0))) |
+        \   execute 'NERDTree ' . fnameescape(argv(0)) |
+        \ else |
+        \   NERDTree | wincmd p | execute 'edit ' . fnameescape(argv(0)) |
+        \ endif |
+        \ endif
+augroup END
+
+augroup NERDTreeAutoclose
+  autocmd!
+  autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && get(b:, 'NERDTree').isTabTree() | quit | endif
+augroup END
