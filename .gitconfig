@@ -1,0 +1,7 @@
+[user]
+	name = Robert Bumgarner
+	email = robert.bumgarner@gmail.com
+[init]
+	defaultBranch = main
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/

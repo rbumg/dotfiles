@@ -1,0 +1,125 @@
+# AWS
+alias av='aws-vault'
+alias avi='aws-vault exec intellizu --'
+alias avl='aws-vault login'
+alias awi='aws --profile intellizu'
+
+adl() {
+    aws --profile production ecr get-login-password --region $REGION \
+        | docker login \
+            --username AWS \
+            --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com"
+}
+
+# Localstack
+alias laws='aws --endpoint-url http://localhost:4566'
+
+
+# Docker
+alias d='docker'
+alias dei='docker exec -it'
+alias dc='docker compose'
+alias dce='docker compose exec'
+alias dcr='docker compose run --rm'
+alias dcu='docker compose up -d'
+alias dproxy='docker compose -f ~/dev/proxy/docker-compose.yml up -d'
+
+alias dcd='docker compose -f docker-compose.dev.yml'
+alias dcdr='docker compose -f docker-compose.dev.yml run --rm'
+alias dcdu='docker compose -f docker-compose.dev.yml up -d'
+alias dcpu='docker compose -f docker-compose.proxy.yml up -d'
+alias dciex='docker compose exec app iex'
+alias dps='docker ps'
+
+# Git
+alias gc='git commit -m'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias gs='git status'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdstat='git diff --stat'
+alias gpu='git push --set-upstream origin $(git symbolic-ref --short HEAD)'
+ghr() {
+    export APP_REPO=$(git config remote.origin.url | cut -f2 -d. | tr ':' /)
+    open "https://github.${APP_REPO}"
+}
+glogo() {
+    git log --oneline --graph --all --decorate $1..$2
+}
+
+# Kubernetes
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get service'
+keb() {
+    kubectl exec -it $1 bash
+}
+
+# Pnmp
+alias p='pnpm'
+
+
+# Terraform
+alias tf='terraform'
+alias tfi='terraform init'
+alias tfa='terraform apply'
+alias tfc='terraform console'
+alias tfd='terraform destroy'
+alias tfp='terraform plan'
+alias tfs='terraform show'
+alias tff='terraform fmt'
+alias tfv='terraform validate'
+alias tfw='terraform workspace'
+alias tfws='terraform workspace select'
+alias tfwn='terraform workspace new'
+alias tfp='terraform plan -out=tfplan'
+alias tfa='terraform apply tfplan'
+alias dtf='TF_LOG=DEBUG terraform'
+alias ttf='TF_LOG=TRACE terraform'
+
+# Terragrunt
+alias tg='terragrunt'
+alias tgi='terragrunt init'
+alias tga='terragrunt apply'
+alias tgd='terragrunt destroy'
+alias tgp='terragrunt plan'
+alias tgs='terragrunt show'
+alias tgf='terragrunt fmt'
+alias tgv='terragrunt validate'
+alias tgr='terragrunt run-all'
+alias tgra='terragrunt run-all apply'
+alias tgrd='terragrunt run-all destroy'
+alias tgrp='terragrunt run-all plan'
+alias tgrs='terragrunt run-all show'
+alias tgrf='terragrunt run-all fmt'
+alias tgrv='terragrunt run-all validate'
+
+# OpenTofu
+alias tofu='tofu'
+alias tofui='tofu init'
+alias tofup='tofu plan'
+alias tofua='tofu apply'
+alias tofud='tofu deploy'
+alias tofus='tofu show'
+
+
+# Misc
+alias c='code .'
+alias iem='iex -S mix'
+alias ietest='MIX_ENV=test iex -S mix test'
+alias ietestv='MIX_ENV=test iex -S mix test --trace'
+alias mtest='MIX_ENV=test mix test'
+alias mtestv='MIX_ENV=test mix test --trace'
+alias nv='nvim'
+alias reload='source ~/.zshrc'
+alias lzd='lazydocker'
+alias sc='safety check'
+alias scf='safety check --full-report'
+alias renv='export $(grep -v "^#" .env | xargs)'
+alias sqlx='cargo sqlx'
+
+alias run='/usr/local/bin/$1'
+pip-add() {
+    pip install $1 && pip freeze | grep $1 >> requirements.txt
+}
